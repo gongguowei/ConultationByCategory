@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aircos.mapper.ProfessionMapper">
+
+    <resultMap id="BaseResultMap" type="com.aircos.entity.dao.Profession">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="create_uid" jdbcType="INTEGER" property="createUid" />
+        <result column="need" jdbcType="VARCHAR" property="need" />
+        <result column="scale_as" jdbcType="VARCHAR" property="scaleAs" />
+        <result column="scale_sex" jdbcType="VARCHAR" property="scaleSex" />
+        <result column="work_detail" jdbcType="VARCHAR" property="workDetail" />
+        <result column="profession_detail" jdbcType="VARCHAR" property="professionDetail" />
+        <result column="create_time" jdbcType="DATE" property="createTime" />
+        <result column="update_time" jdbcType="DATE" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="ProfessionBO" type="com.aircos.entity.bo.ProfessionBO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="match" jdbcType="INTEGER" property="match" />
+        <result column="name" jdbcType="VARCHAR" property="professionName" />
+    </resultMap>
+
+    <resultMap id="QueryProfessionVo" type="com.aircos.entity.vo.QueryProfessionVo">
+        <result column="name" jdbcType="VARCHAR" property="professionName" />
+    </resultMap>
+
+    <resultMap id="ProfessionDetail" type="com.aircos.entity.vo.ProfessionDetailVo"
+               extends="com.aircos.mapper.ProfessionMapper.BaseResultMap">
+        <collection column="id"
+                    property="schoolList"
+                    javaType="java.util.ArrayList"
+                    select="com.aircos.mapper.SchoolMapper.querySchoolsByProfessionId"/>
+    </resultMap>
+
+    <!-- 根据答案获取用户适合的专业 -->
+    <select id="selectByAnswer" resultMap="ProfessionBO">
+
+    SELECT
+      profession.id,
+      profession.`name`,
+      ras.`match`
+    FROM
+        aircos_profession profession left JOIN relation_answer_profession ras ON profession.id = ras.profession_id
+    WHERE
+        ras.id IN ( SELECT profession_id FROM relation_answer_profession WHERE answer_id = ( SELECT id FROM aircos_answer WHERE answer = #{answer} ) )
+    ORDER BY
+        `match` DESC
+
+    </select>
+
+
+    <select id="queryProfessionDetail" resultMap="ProfessionDetail">
+
+    SELECT
+        id,
+        create_uid,
+        need,
+        `name`,
+        scale_as,
+        scale_sex,
+        work_detail,
+        profession_detail,
+        create_time,
+        update_time
+    FROM
+        aircos_profession
+    WHERE
+        id = #{professionId}
+
+    </select>
+
+    <select id="queryProfessionsByKeyWord" resultMap="QueryProfessionVo">
+        SELECT `name` FROM aircos_profession
+        <if test="keyWord != null">
+            WHERE `name` LIKE CONCAT('%',#{keyWord},'%')
+        </if>
+    </select>
+
+
+</mapper>

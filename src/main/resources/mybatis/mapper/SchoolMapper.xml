@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aircos.mapper.SchoolMapper">
+
+    <resultMap id="BaseResultMap" type="com.aircos.entity.dao.School">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="source_min" jdbcType="INTEGER" property="sourceMin" />
+        <result column="school_address" jdbcType="VARCHAR" property="schoolAddress" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="create_time" jdbcType="DATE" property="createTime" />
+        <result column="update_time" jdbcType="DATE" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="SchoolBO" type="com.aircos.entity.bo.SchoolBO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="match" jdbcType="INTEGER" property="match" />
+        <result column="name" jdbcType="VARCHAR" property="schoolName" />
+    </resultMap>
+
+    <!--  通过 答案 + 总分 查询匹配的院校 -->
+    <select id="selectListByAnswer" resultMap="SchoolBO">
+
+    SELECT
+        school.id,
+        school.`name`,
+        ras.`match`
+    FROM
+        aircos_school school
+        LEFT JOIN relation_answer_school ras ON school.id = ras.school_id
+    WHERE
+        school.source_min &lt;= #{totalSource}
+        AND school.id IN ( SELECT school_id FROM relation_answer_school WHERE answer_id = ( SELECT id FROM aircos_answer WHERE answer = #{answer} ) )
+    ORDER BY
+        `match` DESC
+
+    </select>
+
+    <select id="querySchoolsByProfessionId" resultMap="BaseResultMap">
+        SELECT id, source_min, school_address, `name`, create_time, update_time
+        FROM aircos_school
+        WHERE id IN ( SELECT school_id FROM relation_school_profession WHERE profession_id = #{professionId})
+
+    </select>
+
+
+</mapper>
