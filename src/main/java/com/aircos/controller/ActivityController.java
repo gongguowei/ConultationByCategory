@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2020-02-02
  */
 @Slf4j
-@Api(tags = "ActivityController", description = "首页轮播图接口")
+@Api(tags = "ActivityController", description = "用户端：首页轮播图接口")
 @RestController
 @RequestMapping("/v1/activity")
 public class ActivityController {

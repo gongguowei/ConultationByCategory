@@ -3,7 +3,9 @@ package com.aircos.controller.admin;
 import com.aircos.core.Result;
 import com.aircos.core.ResultGenerator;
 import com.aircos.entity.dao.Headline;
+import com.aircos.entity.dto.QueryHeadlineDto;
 import com.aircos.service.HeadlineService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -58,5 +60,19 @@ public class AdminHeadlineController {
     public Result delete(int id) {
         headlineService.delete(id);
         return ResultGenerator.success();
+    }
+
+    @ApiOperation(
+            value = "获取招生头条",
+            authorizations = { @Authorization(value = "jwt")}
+    )
+    @GetMapping("/list")
+    public Result<IPage<Headline>> list(
+            @RequestParam(required = false, defaultValue = "1")Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "5")Integer pageSize,
+            @RequestBody QueryHeadlineDto queryHeadline)
+    {
+        IPage<Headline> result = headlineService.listAdminHeadline(pageIndex, pageSize, queryHeadline);
+        return ResultGenerator.success(result);
     }
 }

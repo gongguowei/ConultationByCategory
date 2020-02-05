@@ -2,8 +2,8 @@ package com.aircos.service;
 
 import com.aircos.entity.dao.Activity;
 import com.aircos.entity.dto.CreateActivityDto;
-import com.aircos.entity.dto.PageInfoDto;
 import com.aircos.entity.vo.ActivityVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -45,4 +45,13 @@ public interface ActivityService {
      * @param id 首页轮播图主键
      */
     void delete(int id);
+
+    /**
+     * Admin for 首页轮播图列表
+     *
+     * @param pageIndex 页码
+     * @param pageSize 页数
+     * @return 轮播图列表
+     */
+    IPage<Activity> listAdminActivity(Integer pageIndex, Integer pageSize);
 }

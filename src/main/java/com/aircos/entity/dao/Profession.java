@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -22,8 +23,18 @@ public class Profession {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
+    @ApiModelProperty(value = "父级")
+    private Integer pid;
+
+    @ApiModelProperty(value = "品类分级")
+    private Integer level;
+
     @ApiModelProperty(value = "创建用户主键")
     private Integer createUid;
+
+    @ApiModelProperty(value = "是否删除")
+    @Column(name = "is_deleted true:删除 false:未删除")
+    private Boolean isDeleted;
 
     @NotBlank(message = "专业名称不能为空")
     @ApiModelProperty(value = "专业名称")

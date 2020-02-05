@@ -1,6 +1,7 @@
 package com.aircos.entity.vo.user;
 
 import com.aircos.core.Date2UnixTimestampSerializer;
+import com.aircos.entity.dao.User;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,25 +17,8 @@ import java.util.Date;
  */
 @ApiModel
 @Data
-public class UserVo {
+public class UserVo extends User {
 
-    @ApiModelProperty(value = "主键")
-    private Integer id;
-
-    @ApiModelProperty(value = "手机号")
-    private String phone;
-
-    @ApiModelProperty(value = "昵称")
-    private String nickname;
-
-    @ApiModelProperty(value = "头像")
-    private String headUrl;
-
-    @ApiModelProperty(value = "创建时间", readOnly = true)
-    @JsonSerialize(using = Date2UnixTimestampSerializer.class)
-    private Date createTime;
-
-    @ApiModelProperty(value = "最近更新时间", readOnly = true)
-    @JsonSerialize(using = Date2UnixTimestampSerializer.class)
-    private Date updateTime;
+    @ApiModelProperty(value = "会员状态 true：会员 false：非会员")
+    private Boolean userType;
 }

@@ -1,14 +1,16 @@
 package com.aircos.mapper;
 
+import com.aircos.core.mybatis.base.MyBaseMapper;
 import com.aircos.entity.bo.ProfessionBO;
 import com.aircos.entity.dao.Profession;
 import com.aircos.entity.vo.ProfessionDetailVo;
 import com.aircos.entity.vo.QueryProfessionVo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Mapper of 专业
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * @since 2020-01-28
  */
 @Repository
-public interface ProfessionMapper extends BaseMapper<Profession> {
+public interface ProfessionMapper extends MyBaseMapper<Profession> {
 
     /**
      * 根据答案获取用户适合的专业
@@ -46,4 +48,13 @@ public interface ProfessionMapper extends BaseMapper<Profession> {
      */
     IPage<QueryProfessionVo> queryProfessionsByKeyWord(IPage page,
                                                        @Param("keyWord") String keyWord);
+
+    /**
+     * 通过学校ID查询专业列表
+     *
+     * @param schoolId 学校ID
+     * @return 专业列表
+     */
+    List<ProfessionBO> queryProfessionBySchoolId(@Param("schoolId") Integer schoolId);
+
 }

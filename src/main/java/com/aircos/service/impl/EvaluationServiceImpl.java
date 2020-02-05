@@ -3,7 +3,6 @@ package com.aircos.service.impl;
 import com.aircos.core.ServiceException;
 import com.aircos.entity.bo.ProfessionBO;
 import com.aircos.entity.bo.SchoolBO;
-import com.aircos.entity.dao.School;
 import com.aircos.entity.dao.User;
 import com.aircos.entity.dto.CreateEvaluationDto;
 import com.aircos.entity.vo.evaluation.EvaluationVo;
@@ -13,13 +12,14 @@ import com.aircos.mapper.SchoolMapper;
 import com.aircos.service.EvaluationService;
 import com.aircos.service.UserService;
 import com.aircos.util.SecurityUtils;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service of 专业倾向测评
@@ -51,11 +51,8 @@ public class EvaluationServiceImpl implements EvaluationService {
         User loginUser = userService.findByPhone(SecurityUtils.getPhone());
 
         //根据当前登录用户的分数获取可以报考的院校
-        Integer totalSource = computeTotalSource(loginUser);
-        List<School> schoolList = schoolMapper.selectList(new QueryWrapper<School>()
-                .lambda()
-                .le(School::getSourceMin, totalSource));
-        if (0 == schoolList.size()) {
+        int failSubject = 3;
+        if (computeTotalSource(loginUser) >= failSubject) {
             throw new ServiceException("暂没有满足的院校");
         }
         //TODO 答案与院校的关系可以考虑使用 Redis 缓存
@@ -66,10 +63,12 @@ public class EvaluationServiceImpl implements EvaluationService {
         body.getAnswerList().forEach(one -> {
             stringBuffer.append(one);
         });
-        IPage<SchoolBO> schoolListByAnswer = schoolMapper.selectListByAnswer(schoolBOPage, stringBuffer.toString(), totalSource);
+        IPage<SchoolBO> schoolListByAnswer = schoolMapper.selectListByAnswer(schoolBOPage, stringBuffer.toString());
 
         //根据答案推荐对应的专业
         IPage<ProfessionBO> professionListByAnswer = professionMapper.selectByAnswer(professionBOPage, stringBuffer.toString());
+
+        //TODO 与公司合作的学校，有推荐给用户的专业，有限推荐该学校
 
         //装载
         result.setSuitableSchool(schoolListByAnswer);
@@ -77,7 +76,33 @@ public class EvaluationServiceImpl implements EvaluationService {
         return result;
     }
 
-    protected Integer computeTotalSource(User loginUser) {
-        return loginUser.getSourceChinese() + loginUser.getSourceMathematics();
+    /**
+     * 检查当前登录用户的会考成绩
+     * Note: 会考成绩三门为D的同学无法安排学校
+     *
+     * @param loginUser 当前登录用户
+     * @return 不及格成绩
+     */
+    protected int computeTotalSource(User loginUser) {
+        List<String> ready = new ArrayList<>(12);
+
+        ready.add(loginUser.getSourceMathematics());
+        ready.add(loginUser.getSourceChinese());
+        ready.add(loginUser.getGeneralTechnology());
+        ready.add(loginUser.getSourceBiology());
+        ready.add(loginUser.getSourceChemistry());
+        ready.add(loginUser.getSourceGeography());
+        ready.add(loginUser.getSourcePolitics());
+        ready.add(loginUser.getSourceEnglish());
+        ready.add(loginUser.getSourceHistory());
+        ready.add(loginUser.getSourceInformation());
+        ready.add(loginUser.getSourcePhysics());
+
+        int subjectCheck = 11;
+        if (subjectCheck != ready.size()) {
+            throw new ServiceException("请完善会考成绩！我的 -> 输入成绩");
+        }
+
+        return ready.stream().filter(source -> "D".equals(source)).collect(Collectors.toList()).size();
     }
 }

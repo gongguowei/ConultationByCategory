@@ -36,7 +36,7 @@ public class EvaluationController {
     }
 
     @ApiOperation(
-            value = "创建专业倾向测评结果",
+            value = "获取专业倾向测评结果",
             authorizations = { @Authorization(value = "jwt")}
     )
     @PostMapping("/create")

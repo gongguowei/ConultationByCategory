@@ -1,6 +1,5 @@
 package com.aircos.aop.aspect;
 
-import com.aircos.entity.dao.ProfessionLog;
 import com.aircos.entity.dao.User;
 import com.aircos.service.LogService;
 import com.aircos.service.UserService;

@@ -5,6 +5,7 @@ import com.aircos.core.ResultGenerator;
 import com.aircos.entity.dao.Activity;
 import com.aircos.entity.dto.CreateActivityDto;
 import com.aircos.service.ActivityService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controller of 管理员端：首页轮播图接口
@@ -59,5 +62,18 @@ public class AdminActivityController {
     public Result update(@RequestBody int id) {
         activityService.delete(id);
         return ResultGenerator.success();
+    }
+
+    @ApiOperation(
+            value = "获取首页轮播图",
+            authorizations = { @Authorization(value = "jwt")}
+    )
+    @GetMapping("/list")
+    public Result<IPage<Activity>> list(
+            @RequestParam(required = false, defaultValue = "1")Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "5")Integer pageSize)
+    {
+        IPage<Activity> result = activityService.listAdminActivity(pageIndex, pageSize);
+        return ResultGenerator.success(result);
     }
 }

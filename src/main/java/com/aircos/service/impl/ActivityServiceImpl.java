@@ -84,6 +84,12 @@ public class ActivityServiceImpl implements ActivityService {
         activityMapper.deleteById(id);
     }
 
+    @Override
+    public IPage<Activity> listAdminActivity(Integer pageIndex, Integer pageSize) {
+        IPage<Activity> page = new Page(pageIndex, pageSize);
+        return activityMapper.selectPage(page, null);
+    }
+
     /**
      * 首页轮播图排序校验
      *

@@ -24,5 +24,5 @@ public class CreateCategoryDto {
     private Integer pid;
 
     @ApiModelProperty(value = "品类名称")
-    private String  categoryName;
+    private String categoryName;
 }

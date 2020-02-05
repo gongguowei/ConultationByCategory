@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aircos.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.aircos.entity.dao.User">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <id column="sex" jdbcType="INTEGER" property="sex" />
+        <result column="study_out" jdbcType="INTEGER" property="studyOut" />
+        <result column="qq_number" jdbcType="INTEGER" property="qqNumber" />
+        <result column="expert_service" jdbcType="INTEGER" property="expertService" />
+        <result column="source_history" jdbcType="VARCHAR" property="sourceHistory" />
+        <result column="source_english" jdbcType="VARCHAR" property="sourceEnglish" />
+        <result column="source_biology" jdbcType="VARCHAR" property="sourceBiology" />
+        <result column="source_politics" jdbcType="VARCHAR" property="sourcePolitics" />
+        <result column="source_chinese" jdbcType="VARCHAR" property="sourceChinese" />
+        <result column="source_physics" jdbcType="VARCHAR" property="sourcePhysics" />
+        <result column="source_geography" jdbcType="VARCHAR" property="sourceGeography" />
+        <result column="source_chemistry" jdbcType="VARCHAR" property="sourceChemistry" />
+        <result column="source_mathematics" jdbcType="VARCHAR" property="sourceMathematics" />
+        <result column="source_information" jdbcType="VARCHAR" property="sourceInformation" />
+        <result column="general_technology" jdbcType="VARCHAR" property="generalTechnology" />
+        <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
+        <result column="study_subject" jdbcType="VARCHAR" property="studySubject" />
+        <result column="school_address" jdbcType="VARCHAR" property="schoolAddress" />
+        <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+        <result column="sos_phone_number" jdbcType="VARCHAR" property="sosPhoneNumber" />
+        <result column="create_time" jdbcType="DATE" property="createTime" />
+        <result column="update_time" jdbcType="DATE" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="UserVo" type="com.aircos.entity.vo.user.UserVo" extends="BaseResultMap">
+
+    </resultMap>
+
+    <select id="listUsersByCondition" resultMap="UserVo">
+        SELECT
+        id, sex, study_out, qq_number, expert_service, source_history, source_english, source_biology, source_politics, source_politics,
+        source_chinese, source_physics, source_geography, source_chemistry, source_mathematics, source_information, general_technology,
+        head_url, password, nick_name, school_name, study_subject, phone_number, sos_phone_number, create_time, update_time
+        FROM aircos_user
+        <if test="searchInfo.studentName != null">
+            WHERE nick_name = #{searchInfo.studentName}
+        </if>
+        <if test="searchInfo.phoneNumber != null">
+            AND phone_number = #{searchInfo.phoneNumber}
+        </if>
+    </select>
+
+</mapper>

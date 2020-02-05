@@ -2,12 +2,13 @@ package com.aircos.service.impl;
 
 import com.aircos.entity.dao.Headline;
 import com.aircos.entity.dao.User;
-import com.aircos.entity.dto.QueryHeadline;
+import com.aircos.entity.dto.QueryHeadlineDto;
 import com.aircos.entity.vo.HeadlineVo;
 import com.aircos.mapper.HeadlineMapper;
 import com.aircos.service.HeadlineService;
 import com.aircos.service.UserService;
 import com.aircos.util.SecurityUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class HeadlineServiceImpl implements HeadlineService {
     }
 
     @Override
-    public Headline detail(QueryHeadline query) {
+    public Headline detail(QueryHeadlineDto query) {
         return headlineMapper.selectById(query.getId());
     }
 
@@ -72,5 +73,13 @@ public class HeadlineServiceImpl implements HeadlineService {
     public void delete(int id) {
         //TODO 可以先查询被删除数据是否存在
         headlineMapper.deleteById(id);
+    }
+
+    @Override
+    public IPage<Headline> listAdminHeadline(Integer pageIndex, Integer pageSize, QueryHeadlineDto queryHeadline) {
+        IPage page = new Page(pageIndex, pageSize);
+        return headlineMapper.selectPage(page, new QueryWrapper<Headline>()
+                .lambda()
+                .eq(null != queryHeadline.getId(), Headline::getId, queryHeadline.getId()));
     }
 }

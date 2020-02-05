@@ -15,9 +15,14 @@ import javax.validation.constraints.NotBlank;
 @ApiModel
 @Data
 public class CreateUserDto {
+
     @NotBlank
     @ApiModelProperty(value = "手机号", required = true)
     private String phone;
+
+    @NotBlank
+    @ApiModelProperty(value = "短信验证码")
+    private String smsCode;
 
     @NotBlank
     @ApiModelProperty(value = "密码, 使用SHA-256 + 随机盐 + 密钥加密", required = true)
@@ -34,6 +39,10 @@ public class CreateUserDto {
     @NotBlank
     @ApiModelProperty(value = "就读学校", required = true)
     private String schoolName;
+
+    @NotBlank
+    @ApiModelProperty(value = "就读地区")
+    private String schoolAddress;
 
     @NotBlank
     @ApiModelProperty(value = "就读科目", required = true)

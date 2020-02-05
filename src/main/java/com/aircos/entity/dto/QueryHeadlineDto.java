@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel
 @Data
-public class QueryHeadline {
+public class QueryHeadlineDto {
 
     @NotNull(message = "招生头条主键不能为Null!")
     @ApiModelProperty(value = "招生头条主键")

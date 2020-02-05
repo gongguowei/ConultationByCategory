@@ -1,6 +1,7 @@
 package com.aircos.mapper;
 
 import com.aircos.entity.dao.Category;
+import com.aircos.entity.vo.CategoryAllVo;
 import com.aircos.entity.vo.CategoryVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,18 @@ public interface CategoryMapper extends BaseMapper<Category> {
      */
     List<CategoryVo> queryCategoryOne();
 
+    /**
+     * 获取所有品类
+     *
+     * @return 所有品类
+     */
+    List<CategoryAllVo> queryCategoryAllTree();
+
+    /**
+     * 配合Xml，递归查询出一级品类下的所有子品类
+     *
+     * @param id
+     * @return
+     */
+    List<CategoryAllVo> selectCategoryChildrenById(@Param("id") Integer id);
 }

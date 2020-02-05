@@ -66,14 +66,25 @@
         aircos_profession
     WHERE
         id = #{professionId}
+        AND is_deleted = 1
 
     </select>
 
     <select id="queryProfessionsByKeyWord" resultMap="QueryProfessionVo">
         SELECT `name` FROM aircos_profession
+        WHERE is_deleted = 1
         <if test="keyWord != null">
-            WHERE `name` LIKE CONCAT('%',#{keyWord},'%')
+            AND `name` LIKE CONCAT('%',#{keyWord},'%')
         </if>
+    </select>
+
+    <select id="queryProfessionBySchoolId" resultMap="ProfessionBO">
+    SELECT
+        `name`
+    FROM
+        aircos_profession
+    WHERE
+        id IN ( SELECT profession_id FROM relation_school_profession WHERE school_id = #{schoolId} )
     </select>
 
 

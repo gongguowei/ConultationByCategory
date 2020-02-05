@@ -36,11 +36,11 @@ public class UserMemberMoney implements Serializable {
     @ApiModelProperty(value = "总的充值金额 单位分")
     private Integer money;
 
+    @ApiModelProperty(value = "是否是会员 true:会员 false:非会员")
+    @TableField("is_member")
+    private Boolean isMember;
+
     @ApiModelProperty(value = "最后一次充值的时间")
     @TableField("last_time")
     private Date lastTime;
-
-    @ApiModelProperty(value = "是否是会员")
-    @TableField("is_member")
-    private Boolean isMember;
 }

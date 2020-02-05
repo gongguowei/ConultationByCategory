@@ -4,30 +4,46 @@
 
     <resultMap type="com.aircos.entity.vo.CategoryVo" id="category">
         <result column="id" property="id" javaType="java.lang.Integer" />
-        <result column="category_name" property="categoryName" javaType="java.lang.String" />
+        <result column="name" property="categoryName" javaType="java.lang.String" />
         <result column="level" property="level" javaType="java.lang.Integer" />
         <result column="pid" property="pid" javaType="java.lang.Integer" />
+    </resultMap>
+
+    <resultMap type="com.aircos.entity.vo.CategoryAllVo" id="categoryAll">
+        <result column="id" property="id" javaType="java.lang.Integer" />
+        <result column="name" property="categoryName" javaType="java.lang.String" />
+        <result column="level" property="level" javaType="java.lang.Integer" />
+        <result column="pid" property="pid" javaType="java.lang.Integer" />
+        <collection column="id" property="children" javaType="java.util.ArrayList" select="selectCategoryChildrenById"/>
     </resultMap>
 
 
     <select id="queryCategoryOne" resultMap="category">
     SELECT
-        id, category_name, `level`, pid
+        id, `name`, `level`, pid
     FROM
-        aircos_category
+        aircos_profession
     WHERE
         `level` = 1
     </select>
 
     <select id="queryCategoryTree" resultMap="category">
     SELECT
-        id, category_name, `level`, pid
+        id, `name`, `level`, pid
     FROM
-        aircos_category
+        aircos_profession
     WHERE
         `level` = #{level}
         AND pid = #{pid}
         AND is_deleted = 1
+    </select>
+
+    <select id="queryCategoryAllTree" resultMap="categoryAll">
+        SELECT id,`name`,`level`, pid FROM aircos_profession WHERE `level` = 1 AND is_deleted = 1
+    </select>
+
+    <select id="selectCategoryChildrenById" resultMap="categoryAll" parameterType="int">
+        SELECT id,`name`,`level`, pid from aircos_profession where pid= #{id} AND is_deleted = 1
     </select>
 
 </mapper>

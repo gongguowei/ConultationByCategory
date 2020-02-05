@@ -1,6 +1,7 @@
 package com.aircos.service;
 
 import com.aircos.entity.dto.CreateCategoryDto;
+import com.aircos.entity.vo.CategoryAllVo;
 import com.aircos.entity.vo.CategoryVo;
 
 import java.util.List;
@@ -12,13 +13,6 @@ import java.util.List;
  * @since 2020-02-02
  */
 public interface CategoryService {
-
-    /**
-     * Admin of 专业品类创建
-     *
-     * @param body 品类信息
-     */
-    void create(CreateCategoryDto body);
 
     /**
      * 获取1层品类列表
@@ -37,16 +31,10 @@ public interface CategoryService {
     List<CategoryVo> listTree(int pid, int level);
 
     /**
-     * Admin of 专业品类更新
+     * 返回所有品类
      *
-     * @param body 更新的品类信息
+     * @return 品类列表
      */
-    void update(CreateCategoryDto body);
-
-    /**
-     * Admin of 删除品类
-     *
-     * @param id 品类表主键
-     */
-    void delete(int id);
+    List<CategoryAllVo> list();
 }
+

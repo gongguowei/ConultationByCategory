@@ -3,7 +3,7 @@ package com.aircos.controller;
 import com.aircos.core.Result;
 import com.aircos.core.ResultGenerator;
 import com.aircos.entity.dao.Headline;
-import com.aircos.entity.dto.QueryHeadline;
+import com.aircos.entity.dto.QueryHeadlineDto;
 import com.aircos.entity.vo.HeadlineVo;
 import com.aircos.service.HeadlineService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -48,11 +48,11 @@ public class HeadlineController {
     }
 
     @ApiOperation(
-            value = "获取首页- 招生头条",
+            value = "获取首页- 招生头条详情",
             authorizations = { @Authorization(value = "jwt")}
     )
     @GetMapping("/detail")
-    public Result<Headline> detail(@RequestBody QueryHeadline query) {
+    public Result<Headline> detail(@RequestBody QueryHeadlineDto query) {
         Headline result = headlineService.detail(query);
         return ResultGenerator.success(result);
     }

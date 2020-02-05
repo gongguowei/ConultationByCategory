@@ -1,6 +1,7 @@
 package com.aircos.service;
 
 import com.aircos.entity.dao.Train;
+import com.aircos.entity.dto.QueryTrainDto;
 import com.aircos.entity.vo.TrainVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
@@ -27,4 +28,14 @@ public interface TrainService {
      * @param body 培训信息
      */
     void create(Train body);
+
+    /**
+     * 管理端：获取培训信息
+     *
+     * @param pageIndex 页码
+     * @param pageSize 页数
+     * @param queryTrain 查询参数
+     * @return
+     */
+    IPage<Train> listAdminTrain(Integer pageIndex, Integer pageSize, QueryTrainDto queryTrain);
 }

@@ -2,6 +2,7 @@ package com.aircos.controller;
 
 import com.aircos.core.Result;
 import com.aircos.core.ResultGenerator;
+import com.aircos.entity.vo.CategoryAllVo;
 import com.aircos.entity.vo.CategoryVo;
 import com.aircos.service.CategoryService;
 import io.swagger.annotations.Api;
@@ -50,5 +51,14 @@ public class CategoryController {
     public Result<List<CategoryVo>> listTree(int pid, int level) {
         List<CategoryVo> result = categoryService.listTree(pid, level);
         return ResultGenerator.success(result);
+    }
+
+    @ApiOperation(
+            value = "用户端: 3层品类列表",
+            authorizations = {@Authorization(value = "jwt")}
+    )
+    @GetMapping("/list")
+    public Result<List<CategoryAllVo>> list() {
+        return ResultGenerator.success(categoryService.list());
     }
 }

@@ -23,16 +23,39 @@ public class School {
     @ApiModelProperty(hidden = true)
     private Integer id;
 
-    @ApiModelProperty(value = "最低录取分数, 根据用户总分过滤不满足条件的院校")
-    @TableField(value = "source_min")
-    private Integer sourceMin;
-
     @ApiModelProperty(value = "院校名称")
-    @TableField(value = "name")
-    private String name;
+    @TableField(value = "school_name")
+    private String schoolName;
 
-    @ApiModelProperty(value = "地址")
-    private String schoolAddress;
+    @ApiModelProperty(value = "官方网址")
+    private String schoolUrl;
+
+    @ApiModelProperty(value = "校园介绍")
+    private String schoolInfo;
+
+    @ApiModelProperty(value = "学校联系电话")
+    private String schoolPhone;
+
+    @ApiModelProperty(value = "由 省 + 市 + 区 + 详细 拼接的地址，可以为Null")
+    private String address;
+
+    @ApiModelProperty(value = "地址-市")
+    private String addressCity;
+
+    @ApiModelProperty(value = "地址-详细地址")
+    private String addressOther;
+
+    @ApiModelProperty(value = "地址-区")
+    private String addressRegion;
+
+    @ApiModelProperty(value = "地址-省")
+    private String addressProvince;
+
+    @ApiModelProperty(value = "学校Logo")
+    private String pictureLogo;
+
+    @ApiModelProperty(value = "校园风光")
+    private String pictureView;
 
     @ApiModelProperty(value = "创建时间", readOnly = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

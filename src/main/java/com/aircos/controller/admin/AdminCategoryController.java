@@ -31,33 +31,5 @@ public class AdminCategoryController {
         this.categoryService = categoryService;
     }
 
-    @ApiOperation(
-            value = "创建专业品类",
-            authorizations = { @Authorization(value = "jwt")}
-    )
-    @PostMapping("/create")
-    public Result create(@RequestBody @Validated CreateCategoryDto body) {
-        categoryService.create(body);
-        return ResultGenerator.success();
-    }
 
-    @ApiOperation(
-            value = "更新专业品类",
-            authorizations = { @Authorization(value = "jwt")}
-    )
-    @PostMapping("/update")
-    public Result update(@RequestBody @Validated CreateCategoryDto body) {
-        categoryService.update(body);
-        return ResultGenerator.success();
-    }
-
-    @ApiOperation(
-            value = "删除专业品类",
-            authorizations = { @Authorization(value = "jwt")}
-    )
-    @DeleteMapping("/delete")
-    public Result delete(int id) {
-        categoryService.delete(id);
-        return ResultGenerator.success();
-    }
 }
