@@ -1,6 +1,11 @@
 package com.aircos.manager.impl;
 
 import com.aircos.manager.SmsManager;
+import com.yunpian.sdk.YunpianClient;
+import com.yunpian.sdk.model.Result;
+import com.yunpian.sdk.model.SmsSingleSend;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.aliyuncs.DefaultAcsClient;
@@ -11,6 +16,10 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 /**
  * 短信管理
  *
@@ -19,6 +28,9 @@ import com.aliyuncs.profile.IClientProfile;
  */
 @Service
 public class SmsManagerImpl implements SmsManager {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 产品名称:云通信短信API产品,开发者无需替换
@@ -31,6 +43,16 @@ public class SmsManagerImpl implements SmsManager {
     static final String domain = "dysmsapi.aliyuncs.com";
 
     /**
+     * Key
+     */
+    private final static String YUNPIAN_APIKEY="987e3464e67227a6bdc75481314378ab";
+
+    /**
+     * 验证码长度
+     */
+    private final static int RANDOMSIZE=6;
+
+    /**
      *  TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
      * @return
      */
@@ -38,7 +60,7 @@ public class SmsManagerImpl implements SmsManager {
     static final String accessKeySecret = "yourAccessKeySecret";
 
     @Override
-    public void sendMessage(String mobile, Integer code) throws ClientException {
+    public void sendMessageForAlibaba(String mobile, Integer code) throws ClientException {
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
@@ -67,5 +89,48 @@ public class SmsManagerImpl implements SmsManager {
 
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+    }
+
+    @Override
+    public String sendMessageForYunPian(String mobile) {
+
+        //初始化clnt,使用单例方式
+        YunpianClient clnt = new YunpianClient(YUNPIAN_APIKEY).init();
+
+        //生成短信验证码
+        String verifyCode = createRandomBySize(RANDOMSIZE);
+        redisTemplate.opsForValue().set(mobile, verifyCode, 10*60, TimeUnit.SECONDS);
+
+        //发送短信API
+        Map<String, String> param = clnt.newParam(3);
+        String message = String.format("【云航科技】"+ verifyCode +"(#app#手机验证码，请完成验证)，如非本人操作，请忽略本短信");
+        param.put(YunpianClient.MOBILE, mobile);
+        param.put(YunpianClient.TEXT, message);
+        Result<SmsSingleSend> r = clnt.sms().single_send(param);
+        clnt.close();
+        if (r.getCode()!=0){
+            return "error";
+        }
+        return verifyCode;
+    }
+
+    /**
+     * 根据size长度生成随机数字字符串
+     *
+     * @param size 长度
+     * @return
+     */
+    public static String createRandomBySize(int size){
+        if (size<=0){
+            size=1;
+        }
+        int bound=1;
+        for (int i=1;i<size;i++){
+            bound=bound*10;
+        }
+        //生成短信验证码
+        String verifyCode = String
+                .valueOf(new Random().nextInt((bound*10)-(bound+1)) + bound);
+        return verifyCode;
     }
 }

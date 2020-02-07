@@ -196,6 +196,19 @@
             <version>${aliyun-java-sdk-dysmsapi.version}</version>
         </dependency>
 
+        <!-- 云片短信服务 -->
+        <dependency>
+            <groupId>com.yunpian.sdk</groupId>
+            <artifactId>yunpian-java-sdk</artifactId>
+            <version>1.2.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-nio</artifactId>
+            <version>4.4.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -206,5 +219,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

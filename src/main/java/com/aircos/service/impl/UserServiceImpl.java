@@ -45,9 +45,6 @@ public class UserServiceImpl implements UserService {
     private SmsManager smsManager;
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    @Autowired
     private UserMemberMoneyMapper userMemberMoneyMapper;
 
     @Override
@@ -116,9 +113,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendRegisterCode(String mobile) throws ClientException {
-        Integer code = (int)((Math.random()*9+1)*100000);
-
-        redisTemplate.opsForValue().set(mobile, code, 10*60, TimeUnit.SECONDS);
-        smsManager.sendMessage(mobile, code);
+        smsManager.sendMessageForYunPian(mobile);
     }
 }
