@@ -10,10 +10,7 @@ import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller of Vip充值日志
@@ -45,5 +42,12 @@ public class UserMemberLogController {
             return ResultGenerator.failure("添加失败");
         }
         return ResultGenerator.success();
+    }
+
+    @ApiOperation(value = "查询当前用户是否是会员",
+                  notes = "true:是会员，false不是会员")
+    @GetMapping("/check")
+    public Result<Boolean> checkUserMember() {
+        return ResultGenerator.success(userMemberLogService.checkUserMember());
     }
 }

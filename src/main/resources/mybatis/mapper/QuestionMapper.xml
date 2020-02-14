@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aircos.mapper.QuestionMapper">
+
+    <resultMap id="QuestionVo" type="com.aircos.entity.vo.evaluation.QuestionVo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="question" jdbcType="VARCHAR" property="question" />
+        <collection column="id"
+                    property="waitingOptions"
+                    javaType="java.util.ArrayList"
+                    select="com.aircos.mapper.WaitingOptionMapper.queryWaitingOptionByQuestionId"/>
+    </resultMap>
+
+
+    <select id="listQuestions" resultMap="QuestionVo">
+      SELECT id, question
+      FROM aircos_question
+      WHERE question_type = #{questionType}
+    </select>
+</mapper>

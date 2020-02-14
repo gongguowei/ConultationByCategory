@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller of 用户端：专业信息
+ * Controller of 用户端：专业大全
  *
  * @author gongguowei01@gmail.com
  * @since 2020-02-02
  */
 @Slf4j
-@Api(tags = "ProfessionController", description = "用户端：专业信息")
+@Api(tags = "ProfessionController", description = "用户端：专业大全")
 @RestController
 @RequestMapping("/v1/profession")
 public class ProfessionController {

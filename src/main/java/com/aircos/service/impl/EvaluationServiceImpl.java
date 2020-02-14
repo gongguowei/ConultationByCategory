@@ -6,8 +6,10 @@ import com.aircos.entity.bo.SchoolBO;
 import com.aircos.entity.dao.User;
 import com.aircos.entity.dto.CreateEvaluationDto;
 import com.aircos.entity.vo.evaluation.EvaluationVo;
+import com.aircos.entity.vo.evaluation.QuestionVo;
 import com.aircos.mapper.EvaluationMapper;
 import com.aircos.mapper.ProfessionMapper;
+import com.aircos.mapper.QuestionMapper;
 import com.aircos.mapper.SchoolMapper;
 import com.aircos.service.EvaluationService;
 import com.aircos.service.UserService;
@@ -34,14 +36,17 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private final SchoolMapper schoolMapper;
 
+    private final QuestionMapper questionMapper;
+
     private final ProfessionMapper professionMapper;
 
     @Autowired
     public EvaluationServiceImpl(EvaluationMapper evaluationMapper, UserService userService, SchoolMapper schoolMapper,
-                                 ProfessionMapper professionMapper) {
+                                 ProfessionMapper professionMapper, QuestionMapper questionMapper) {
         this.userService = userService;
         this.schoolMapper = schoolMapper;
         this.professionMapper = professionMapper;
+        this.questionMapper = questionMapper;
     }
 
     @Override
@@ -68,12 +73,17 @@ public class EvaluationServiceImpl implements EvaluationService {
         //根据答案推荐对应的专业
         IPage<ProfessionBO> professionListByAnswer = professionMapper.selectByAnswer(professionBOPage, stringBuffer.toString());
 
-        //TODO 与公司合作的学校，有推荐给用户的专业，有限推荐该学校
+        //TODO 与公司合作的学校，有推荐给用户的专业，优先推荐该学校
 
         //装载
         result.setSuitableSchool(schoolListByAnswer);
         result.setSuitableProfession(professionListByAnswer);
         return result;
+    }
+
+    @Override
+    public List<QuestionVo> listQuestion(int questionType) {
+        return questionMapper.listQuestions(questionType);
     }
 
     /**

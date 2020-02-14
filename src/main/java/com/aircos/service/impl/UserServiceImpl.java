@@ -104,15 +104,25 @@ public class UserServiceImpl implements UserService {
 
         //动态计算用户是否是会员
         List<UserVo> records = result.getRecords();
-        records.forEach(userVo -> {
-            UserMemberMoney checkMember = userMemberMoneyMapper.selectById(userVo.getId());
-            userVo.setUserType(checkMember.getIsMember());
-        });
+        if (0 == records.size()) {
+            records.forEach(userVo -> {
+                UserMemberMoney checkMember = userMemberMoneyMapper.selectById(userVo.getId());
+                userVo.setUserType(checkMember.getIsMember());
+            });
+        }
+
         return result;
     }
 
     @Override
     public void sendRegisterCode(String mobile) throws ClientException {
         smsManager.sendMessageForYunPian(mobile);
+    }
+
+    @Override
+    public User login(String userName, String password) {
+        return userMapper.selectOne(new QueryWrapper<User>()
+                .lambda()
+                .eq(User::getNickName, userName).eq(User::getPassword, password));
     }
 }

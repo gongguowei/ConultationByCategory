@@ -96,6 +96,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*/api-docs").permitAll()
                 // swagger end
                 .antMatchers("/v1/admin/user/create").permitAll()
+                .antMatchers("/test/**").permitAll()
+                .antMatchers("/mall/**").permitAll()
                 // 所有请求都需要认证
                 .anyRequest().authenticated()
                 // 防止iframe 造成跨域

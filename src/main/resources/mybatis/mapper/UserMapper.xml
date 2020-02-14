@@ -40,11 +40,9 @@
         source_chinese, source_physics, source_geography, source_chemistry, source_mathematics, source_information, general_technology,
         head_url, password, nick_name, school_name, study_subject, phone_number, sos_phone_number, create_time, update_time
         FROM aircos_user
-        <if test="searchInfo.studentName != null">
-            WHERE nick_name = #{searchInfo.studentName}
-        </if>
-        <if test="searchInfo.phoneNumber != null">
-            AND phone_number = #{searchInfo.phoneNumber}
+        <if test="searchInfo.studentName != null || searchInfo.phoneNumber != null">
+            WHERE nick_name LIKE CONCAT('%',#{searchInfo.studentName},'%')
+            or `phone_number` LIKE CONCAT('%',#{searchInfo.phoneNumber},'%')
         </if>
     </select>
 

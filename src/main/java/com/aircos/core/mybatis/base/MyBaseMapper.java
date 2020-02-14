@@ -16,8 +16,6 @@ import java.util.List;
  */
 public interface MyBaseMapper<T> extends BaseMapper<T> {
 
-    /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓  ↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
-
     /**
      * 以下定义的 4个 default method, copy from {@link com.baomidou.mybatisplus.extension.toolkit.ChainWrappers}
      */

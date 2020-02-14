@@ -2,11 +2,9 @@ package com.aircos.controller.admin;
 
 import com.aircos.core.Result;
 import com.aircos.core.ResultGenerator;
-import com.aircos.entity.dao.User;
 import com.aircos.entity.dto.CreateUserDto;
 import com.aircos.entity.dto.QueryUserDto;
 import com.aircos.entity.vo.user.UserVo;
-import com.aircos.manager.SmsManager;
 import com.aircos.service.RedisService;
 import com.aircos.service.UserService;
 import com.aliyuncs.exceptions.ClientException;
@@ -15,13 +13,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.List;
 
 /**
  * Controller of 管理员端：用户
@@ -61,7 +56,7 @@ public class AdminUserController {
     }
 
     @ApiOperation(value = "批量获取用户信息")
-    @GetMapping("/infos")
+    @PostMapping("/infos")
     public Result<IPage<UserVo>> listUsers(
         @RequestParam("pageIndex") Integer pageIndex,
         @RequestParam("pageSize") Integer pageSize,

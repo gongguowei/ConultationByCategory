@@ -63,4 +63,13 @@ public interface UserService {
      * @throws ClientException
      */
     void sendRegisterCode(String phone) throws ClientException;
+
+    /**
+     * 管理员登录
+     *
+     * @param userName 用户名
+     * @param password 密码
+     * @return
+     */
+    User login(String userName, String password);
 }

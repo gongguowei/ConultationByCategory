@@ -73,4 +73,15 @@ public class UserMemberLogServiceImpl extends ServiceImpl<UserMemberLogMapper, U
         this.save(body);
         return userMemberMoneyService.saveOrUpdate(builder.build());
     }
+
+    @Override
+    public boolean checkUserMember() {
+        User loginUser = userService.findByPhone(SecurityUtils.getPhone());
+        UserMemberMoney userMember = userMemberMoneyService.getOne(new QueryWrapper<UserMemberMoney>()
+                .eq("id", loginUser.getId()));
+        if (null == userMember) {
+            return false;
+        }
+        return userMember.getIsMember();
+    }
 }

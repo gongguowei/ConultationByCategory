@@ -18,4 +18,11 @@ public interface UserMemberLogService extends IService<UserMemberLog> {
      * @return
      */
     boolean create(UserMemberLog body);
+
+    /**
+     * 查询当前登录用户是否为会员
+     *
+     * @return true:是会员，false:不是
+     */
+    boolean checkUserMember();
 }

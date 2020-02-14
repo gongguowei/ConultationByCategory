@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aircos.mapper.WaitingOptionMapper">
+
+    <resultMap id="BaseResultMap" type="com.aircos.entity.dao.WaitingOption">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="question_id" jdbcType="INTEGER" property="questionId" />
+        <result column="detail" jdbcType="VARCHAR" property="detail" />
+        <result column="options" jdbcType="VARCHAR" property="options" />
+        <result column="create_time" jdbcType="DATE" property="createTime" />
+        <result column="update_time" jdbcType="DATE" property="updateTime" />
+    </resultMap>
+
+
+    <select id="queryWaitingOptionByQuestionId" resultMap="BaseResultMap">
+        SELECT id, question_id, detail, options, create_time, update_time
+        FROM waiting_option
+        WHERE question_id = #{questionId}
+    </select>
+</mapper>
